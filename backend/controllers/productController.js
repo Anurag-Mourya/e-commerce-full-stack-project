@@ -1,4 +1,5 @@
 const model = require('../models/productModel');
+const ErrorHandler = require('../utils/errorHandler');
 const Product = model.Product;
 
 
@@ -15,8 +16,7 @@ exports.createProduct = async (req, res, next) => {
         });
 
     } catch (err) {
-        console.error(err);
-        res.status(400).json({ err });
+        next(new ErrorHandler('Product not found', 404))
     }
 
 }
@@ -34,11 +34,7 @@ exports.updateProduct = async (req, res, next) => {
         })
 
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: 'Product not found',
-            err,
-        })
+        next(new ErrorHandler('Product not found', 404))
     }
 }
 
@@ -53,11 +49,7 @@ exports.deleteProduct = async (req, res, next) => {
             product
         })
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: 'Product is not deleted',
-            err,
-        })
+        next(new ErrorHandler('Product not found', 404))
     }
 
 }
@@ -73,11 +65,7 @@ exports.getProductDetails = async (req, res, next) => {
         })
 
     } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: 'Product is not found',
-            err,
-        })
+        next(new ErrorHandler('Product not found', 404))
     }
 }
 
@@ -90,4 +78,3 @@ exports.getAllproducts = async (req, res) => {
         allProducts
     })
 }
-
